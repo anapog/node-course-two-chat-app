@@ -62,6 +62,24 @@ describe('Users', () => {
 		expect(user).toNotExist();
 	});
 
+	it('should detect duplicated user names', () => {
+		let id = 'A';
+		let name = 'aba';
+
+		let res = users.checkUniqueUser(id, name);
+		expect(res.length).toBe(1);
+		expect(res).toEqual(['aba']);
+	});
+
+	it('should not detect duplicated user names', () => {
+		let id = 'A';
+		let name = 'example';
+
+		let res = users.checkUniqueUser(id, name);
+		expect(res.length).toBe(0);
+		expect(res).toEqual([]); 
+	});
+
 	it('should return names for room A', () => {
 		let res = users.getUserList('A');
 

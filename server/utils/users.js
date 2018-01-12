@@ -22,6 +22,11 @@ class Users {
 
 		return user;
 	}
+	checkUniqueUser(room, name) {
+		let arrayNames = this.getUserList(room);
+
+		return arrayNames.filter((userName) => userName.toLowerCase() === name.toLowerCase());
+	}
 	getUserList(room) {
 		let users = this.users.filter((user) => user.room === room);
 		let namesArray = users.map((user) => user.name);

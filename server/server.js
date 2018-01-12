@@ -25,6 +25,11 @@ io.on('connection', (socket) => {
 			return callback('Name and room name are required');
 		}
 
+		// Check if user name is unique
+		if(users.checkUniqueUser(params.room, params.name).length > 0) {
+			return callback('This name is already in use. Please choose another.');
+		}
+
 		socket.join(params.room);
 		users.removeUser(socket.id);
 		users.addUser(socket.id, params.name, params.room);
@@ -55,15 +60,17 @@ io.on('connection', (socket) => {
 		let user = users.getUser(socket.id);
 
 		if(user) {
- 			io.to(user.room).emit('newLocationMessage', generateLocationMessage(user.name, coords.latitude, coords.longitude));
+			io.to(user.room).emit('newLocationMessage', generateLocationMessage(user.name, coords.latitude, coords.longitude));
 		}
 	});
 
 	socket.on('disconnect', () => {
 		let user = users.removeUser(socket.id);
 
-		io.to(user.room).emit('updateUserList', users.getUserList(user.room));
-		io.to(user.room).emit('newMessage', generateMessage('Admin', `${user.name} has left.`));
+		if(user) {
+			io.to(user.room).emit('updateUserList', users.getUserList(user.room));
+			io.to(user.room).emit('newMessage', generateMessage('Admin', `${user.name} has left.`));
+		}
 	});
 });
 
