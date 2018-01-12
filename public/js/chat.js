@@ -29,7 +29,6 @@ socket.on('connect', () => {
 			console.log('No error');
 		}
 	});
-
 });
 
 socket.on('disconnect', () => {
@@ -77,7 +76,6 @@ jQuery("#message-form").on('submit', (e) => {
 	e.preventDefault();
 
 	socket.emit('createMessage', {
-		from: 'User',
 		text: messageTextbox.val()
 	}, () => {
 		messageTextbox.val('');
