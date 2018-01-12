@@ -3,7 +3,7 @@ let socket = io();
 function scrollToBottom() {
 	// Selectors
 	let messages = jQuery('#messages');
-	//let newMessage = messages.children('li:last-child')
+	let newMessage = messages.children('li:last-child')
 	// Heights
 	let clientHeight = messages.prop('clientHeight');
 	let scrollTop = messages.prop('scrollTop');
@@ -18,11 +18,32 @@ function scrollToBottom() {
 
 
 socket.on('connect', () => {
-	console.log('Connected to server.');
+	let params = jQuery.deparam(window.location.search);
+
+	socket.emit('join', params, (err) => {
+		if(err) {
+			console.log('entering the error')
+			alert(err);
+			window.location.href = '/';
+		} else {
+			console.log('No error');
+		}
+	});
+
 });
 
 socket.on('disconnect', () => {
-	console.log('Disconnected from the server.');
+	console.log('Disconnected from the server');
+});
+
+socket.on('updateUserList', (users) => {
+	let ol = jQuery('<ol></ol>');
+
+	users.forEach((user) => {
+		ol.append(jQuery('<li></li>').text(user));
+	});
+
+	jQuery('#users').html(ol);
 });
 
 socket.on('newMessage', (message) => {
