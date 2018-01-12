@@ -30,6 +30,9 @@ io.on('connection', (socket) => {
 			return callback('This name is already in use. Please choose another.');
 		}
 
+		// Make room case insensitive
+		params.room = params.room.toLowerCase();
+
 		socket.join(params.room);
 		users.removeUser(socket.id);
 		users.addUser(socket.id, params.name, params.room);
