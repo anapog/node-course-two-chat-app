@@ -14,15 +14,23 @@ let app = express();
 let server = http.createServer(app);
 let io = socketIO(server);
 let users = new Users();
+let room = '';
 
 app.use(express.static(publicPath));
 
 io.on('connection', (socket) => {
 	console.log('New user connected');
 
+	socket.emit('roomsList', users.getRoomList());
+
+	socket.on('roomSelected', (roomSelected) => {
+		room = roomSelected;
+	});
+
 	socket.on('join', (params, callback) => {
-		if(!isRealString(params.name) || !isRealString(params.room)) {
-			return callback('Name and room name are required');
+		if(!isRealString(params.name) || 
+			(!isRealString(params.room) && !isRealString(room))) {
+			return callback('A name and room are required');
 		}
 
 		// Check if user name is unique
@@ -30,6 +38,11 @@ io.on('connection', (socket) => {
 			return callback('This name is already in use. Please choose another.');
 		}
 
+		if(!isRealString(params.room)) {
+			params.room = room;
+			socket.emit('roomSelected', room);
+		}
+		
 		params.roomName = params.room;
 		params.room = params.room.toLowerCase();
 		socket.join(params.room);

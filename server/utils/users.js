@@ -36,9 +36,9 @@ class Users {
 		return namesArray;
 	}
 	getRoomList() {
-		let roomsArray = this.users.map((user) => user.room);
+		let roomsArray = this.users.map((user) => user.roomName);
 
-		return roomsArray.filter((elem, pos,arr) => arr.indexOf(elem) == pos);
+		return roomsArray.filter((elem, pos, arr) => arr.indexOf(elem) == pos);
 	}
 
 }

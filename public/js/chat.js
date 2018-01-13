@@ -16,19 +16,21 @@ function scrollToBottom() {
 	}
 };
 
-
 socket.on('connect', () => {
 	let params = jQuery.deparam(window.location.search);
 
 	socket.emit('join', params, (err) => {
 		if(err) {
-			console.log('entering the error')
 			alert(err);
 			window.location.href = '/';
 		} else {
 			console.log('No error');
 		}
 	});
+});
+
+socket.on('roomSelected', (room) => {
+	window.location.search = window.location.search.concat(room);
 });
 
 socket.on('disconnect', () => {

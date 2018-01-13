@@ -10,15 +10,18 @@ describe('Users', () => {
 		users.users = [{
 			id: '1',
 			name: 'aba',
-			room: 'A'
+			roomName: 'A',
+			room: 'a'
 		}, {
 			id: '2',
 			name: 'bill',
-			room: 'B'
+			roomName: 'B',
+			room: 'b'
 		}, {
 			id: '3',
 			name: 'cris',
-			room: 'A'
+			roomName: 'A',
+			room: 'a'
 		}];
 	});
 
@@ -64,31 +67,31 @@ describe('Users', () => {
 	});
 
 	it('should detect duplicated user names', () => {
-		let id = 'A';
+		let room = 'a';
 		let name = 'aba';
 
-		let res = users.checkUniqueUser(id, name);
+		let res = users.checkUniqueUser(room, name);
 		expect(res.length).toBe(1);
 		expect(res).toEqual(['aba']);
 	});
 
 	it('should not detect duplicated user names', () => {
-		let id = 'A';
+		let room = 'a';
 		let name = 'example';
 
-		let res = users.checkUniqueUser(id, name);
+		let res = users.checkUniqueUser(room, name);
 		expect(res.length).toBe(0);
 		expect(res).toEqual([]); 
 	});
 
 	it('should return names for room A', () => {
-		let res = users.getUserList('A');
+		let res = users.getUserList('a');
 
 		expect(res).toEqual(['aba', 'cris']);
 	});
 
 	it('should return names for room B', () => {
-		let res = users.getUserList('B');
+		let res = users.getUserList('b');
 
 		expect(res).toEqual(['bill']);
 	});
