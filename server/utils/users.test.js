@@ -27,11 +27,12 @@ describe('Users', () => {
 		let user = {
 			id: '123',
 			name: 'lala',
-			room: 'kitchen'
+			roomName: 'KITCHEN'
 		};
 
-		let res = users.addUser(user.id, user.name, user.room);
+		let res = users.addUser(user.id, user.name, user.roomName);
 
+		user.room = user.roomName.toLowerCase();
 		expect(users.users).toEqual([user]);
 	});
 
@@ -90,6 +91,12 @@ describe('Users', () => {
 		let res = users.getUserList('B');
 
 		expect(res).toEqual(['bill']);
+	});
+
+	it('should return the list of rooms available', () => {
+		let res = users.getRoomList();
+
+		expect(res).toEqual(['A', 'B']);
 	});
 
 });

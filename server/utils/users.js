@@ -4,7 +4,9 @@ class Users {
 		this.users = [];
 	}
 	addUser(id, name, room) {
-		let user = {id, name, room};
+		let roomName = room;
+		room = room.toLowerCase();
+		let user = {id, name, room, roomName};
 		this.users.push(user);
 		return user;
 	}
@@ -32,6 +34,11 @@ class Users {
 		let namesArray = users.map((user) => user.name);
 
 		return namesArray;
+	}
+	getRoomList() {
+		let roomsArray = this.users.map((user) => user.room);
+
+		return roomsArray.filter((elem, pos,arr) => arr.indexOf(elem) == pos);
 	}
 
 }

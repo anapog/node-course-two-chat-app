@@ -30,12 +30,11 @@ io.on('connection', (socket) => {
 			return callback('This name is already in use. Please choose another.');
 		}
 
-		// Make room case insensitive
+		params.roomName = params.room;
 		params.room = params.room.toLowerCase();
-
 		socket.join(params.room);
 		users.removeUser(socket.id);
-		users.addUser(socket.id, params.name, params.room);
+		users.addUser(socket.id, params.name, params.roomName);
 
 		io.to(params.room).emit('updateUserList', users.getUserList(params.room));
 		// Send message to a specific user
